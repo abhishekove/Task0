@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/topper"
+        app:layout_constraintTop_toTopOf="parent"
+        android:gravity="center"
+        android:text="Click on Image to Change"
+        android:layout_height="wrap_content"/>
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="130dp"
+        android:src="@mipmap/ic_launcher_round"
+        app:layout_constraintTop_toBottomOf="@id/topper"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="40dp"
+        android:id="@+id/cir_login"
+        android:layout_height="130dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:id="@+id/name"
+        android:hint="Enter Name"
+        app:layout_constraintTop_toBottomOf="@id/cir_login"
+        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/gender"
+        app:layout_constraintTop_toBottomOf="@id/name"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Spinner
+                android:layout_width="0dp"
+                android:id="@+id/genderdecide"
+                app:layout_constraintTop_toBottomOf="@id/name"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:text="Select Your gender"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                android:text="Enter Date of Birth"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </LinearLayout>
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:datePickerMode="spinner"
+        android:calendarViewShown="false"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/gender"
+        android:id="@+id/date"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="80dp"/>
+    <EditText
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/date"
+        android:layout_marginTop="0dp"
+        android:id="@+id/number"
+        android:hint="Enter Mobile Number"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:layout_width="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/number"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/numbutton"
+        android:text="Click to get otp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:layout_width="match_parent"
+        android:hint="Enter OTP"
+        app:layout_constraintTop_toBottomOf="@id/numbutton"
+        android:layout_marginTop="0dp"
+        android:id="@+id/otp"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:id="@+id/otpbutton"
+        app:layout_constraintTop_toBottomOf="@id/otp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:text="Click to verify otp"
+        android:layout_height="wrap_content"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
