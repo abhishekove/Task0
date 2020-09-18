@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -38,6 +41,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
@@ -54,9 +58,10 @@ FirebaseAuth firebaseAuth;
 CircleImageView circleImageView;
 EditText otp,number,name;
 Uri uri;
+    String url;
 private static final int PICK_IMAGE_REQUEST = 1;
 StorageReference firebaseStorage;
-CollectionReference firestore;
+CollectionReference firestore,users;
 DatePicker datePicker;
 
 Button getOtp,getVerify;
@@ -76,9 +81,10 @@ Button getOtp,getVerify;
         name=findViewById(R.id.name);
         circleImageView=findViewById(R.id.cir_login);
         number=findViewById(R.id.number);
-        Spinner spinner=findViewById(R.id.genderdecide);
+        final Spinner spinner=findViewById(R.id.genderdecide);
         getOtp=findViewById(R.id.numbutton);
         firestore=FirebaseFirestore.getInstance().collection("gender");
+        users=FirebaseFirestore.getInstance().collection("users");
         firebaseStorage=FirebaseStorage.getInstance().getReference("uploads");
         final List<Gender> genderList=new ArrayList<>();
         firestore.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -126,19 +132,33 @@ Button getOtp,getVerify;
                         ByteArrayOutputStream baos=new ByteArrayOutputStream();
                         bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos);
                         byte[] dat=baos.toByteArray();
-                        firebaseStorage.child(firebaseAuth.getUid()).putBytes(dat).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        final StorageReference ref = firebaseStorage.child(firebaseAuth.getUid()+".jpeg");
+                        final UploadTask uploadTask = ref.putBytes(dat);
+                        Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                             @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_LONG).show();
-                                Task<Uri> task1=taskSnapshot.getStorage().getDownloadUrl();
-                                if (task1.isSuccessful()){
-                                    String url=task1.getResult().toString();
+                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                if (!task.isSuccessful()) {
+                                    throw task.getException();
                                 }
+
+                                // Continue with the task to get the download URL
+                                return ref.getDownloadUrl();
                             }
-                        }).addOnFailureListener(new OnFailureListener() {
+                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
                             @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MainActivity.this,e.getMessage(),Toast.LENGTH_LONG).show();
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    Uri downloadUri = task.getResult();
+                                    users.add(new USER(name.getText().toString(),number.getText().toString(),spinner.getSelectedItem().toString(),downloadUri.toString(),String.valueOf(datePicker.getDayOfMonth())+" "+String.valueOf(datePicker.getMonth())+" "+String.valueOf(datePicker.getYear()))).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                        @Override
+                                        public void onSuccess(DocumentReference documentReference) {
+                                            Toast.makeText(MainActivity.this,"Success",Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                } else {
+                                    // Handle failures
+                                    // ...
+                                }
                             }
                         });
                     }
