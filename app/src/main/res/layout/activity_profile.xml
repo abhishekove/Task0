@@ -5,5 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Profile">
+<!--    name,number,gender,imageUrl,dateOfBirth-->
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="200dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="30dp"
+        android:src="@mipmap/ic_launcher_round"
+        android:id="@+id/pImage"
+        android:layout_height="200dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:paddingTop="20dp"
+        android:id="@+id/welcome"
+        android:text="Welcome"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintTop_toBottomOf="@id/pImage"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/pName"
+        android:text="Check"
+        android:paddingTop="20dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintTop_toBottomOf="@id/welcome"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/pName"
+        android:id="@+id/pNumber"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/pNumber"
+        android:id="@+id/dob"
+        android:paddingTop="20dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/dob"
+        android:id="@+id/pGender"
+        android:paddingTop="20dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:layout_height="wrap_content"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 public class Gender {
     public Gender() {
     }
-    String name;
+    private String name;
 
     public String getName() {
         return name;
