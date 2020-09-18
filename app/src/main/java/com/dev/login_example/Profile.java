@@ -56,10 +56,10 @@ public class Profile extends AppCompatActivity {
                     user=documentSnapshot.toObject(USER.class);
                 }
                 Glide.with(Profile.this).load(user.getImageUrl()).into(imageUrl);
-                name.setText(user.getName());
-                number.setText(user.getNumber());
-                gender.setText(user.getGender());
-                dateOfBirth.setText(user.getDateOfBirth());
+                name.setText("Name: "+user.getName());
+                number.setText("Number: "+user.getNumber());
+                gender.setText("Gender: "+user.getGender());
+                dateOfBirth.setText("D.O.B: "+user.getDateOfBirth());
             }
 
         });
